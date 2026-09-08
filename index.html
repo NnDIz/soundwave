@@ -1,13 +1,97 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>music-site</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Music Site</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>SoundWave</h1>
+        </header>
+
+        <div class="content">
+            <aside>
+                <h2>Навигация</h2>
+                <ul>
+                    <li><a href="#home" class="active">Главная</a></li>
+                    <li><a href="#artists">Исполнители</a></li>
+                    <li><a href="#albums">Альбомы</a></li>
+                    <li><a href="#favorites">Избранное</a></li>
+                    <li><a href="#my-music">Моя музыка</a></li>
+                </ul>
+            </aside>
+
+            <main>
+                <section id="home">
+                    <h1>Добро пожаловать в SoundWave!</h1>
+                    <form class="search-engine" inputmode=""  autocomplete="off" autocorrect="off" spellcheck="false">
+                        <input type="text" placeholder="Поиск музыки..." class="search-input">
+                        <button type="submit" class="search-submit">Поиск</button>
+                    </form>
+                    <section class="recent">
+                        <h2>Недавно добавленные</h2>
+                        <div class="recent-tracks">
+                            <div class="track-card">
+                                <div class="track-cover">
+                                    <img src="prototype.png" alt="Обложка трека">
+                                </div>
+                                <div class="track-info">
+                                    <h3>Название трека</h3>
+                                    <p>Имя исполнителя</p>
+                                </div>
+                            </div>
+                            <div class="track-card">
+                                <div class="track-cover">
+                                    <img src="prototype.png" alt="Обложка трека">
+                                </div>
+                                <div class="track-info">
+                                    <h3>Название трека</h3>
+                                    <p>Имя исполнителя</p>
+                                </div>
+                            </div>
+                            <div class="track-card">
+                                <div class="track-cover">
+                                    <img src="prototype.png" alt="Обложка трека">
+                                </div>
+                                <div class="track-info">
+                                    <h3>Название трека</h3>
+                                    <p>Имя исполнителя</p>
+                                </div>
+                            </div>
+                            <div class="track-card">
+                                <div class="track-cover">
+                                    <img src="prototype.png" alt="Обложка трека">
+                                </div>
+                                <div class="track-info">
+                                    <h3>Название трека</h3>
+                                    <p>Имя исполнителя</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="artists">
+
+                </section>
+
+                <section id="albums">
+
+                </section>
+
+                <section id="contact">
+                </section>
+            </main>
+        </div>
+
+        
+
+        <footer>
+
+        </footer>
+        <script src="script.js"></script>
+
+    </body>
+    </html>
