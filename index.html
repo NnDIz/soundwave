@@ -17,7 +17,7 @@
                 <ul>
                     <li><a href="#home" class="active">Главная</a></li>
                     <li><a href="#artists">Исполнители</a></li>
-                    <li><a href="#albums">Альбомы</a></li>
+                    <li><a href="#playlists">Плейлисты</a></li>
                     <li><a href="#favorites">Избранное</a></li>
                     <li><a href="#my-music">Моя музыка</a></li>
                 </ul>
@@ -26,6 +26,16 @@
             <main>
                 <section id="home">
                     <h1>Добро пожаловать в SoundWave!</h1>
+                    <div class="current-active-track">
+                        <div class="current-active-track-cover">
+                            <img src="prototype.png" alt="Обложка текущего трека">
+                        </div>
+                        <div class="current-active-track-info">
+                            <h2>Имя исполнителя</h2>
+                            <p>Название трека</p>
+                            <span>Альбом * Жанр * 2026</span>
+                        </div>
+                    </div>
                     <form class="search-engine" inputmode=""  autocomplete="off" autocorrect="off" spellcheck="false">
                         <input type="text" placeholder="Поиск музыки..." class="search-input">
                         <button type="submit" class="search-submit">Поиск</button>
@@ -65,15 +75,103 @@
                 </section>
 
                 <section id="artists">
-
+                    <h2>Исполнители</h2>
+                    <div class="artist-list">
+                        <div class="artist-card">
+                            <div class="artist-cover">
+                                <img src="prototype.png" alt="Обложка исполнителя">
+                            </div>
+                            <div class="artist-info">
+                                <h3>Имя исполнителя</h3>
+                                <p>Жанр</p>
+                            </div>
+                        </div>
+                        <div class="artist-card">
+                            <div class="artist-cover">
+                                <img src="infested.png" alt="Обложка исполнителя">
+                            </div>
+                            <div class="artist-info">
+                                <h3>Имя исполнителя</h3>
+                                <p>Жанр</p>
+                            </div>
+                        </div>
+                        <div class="artist-card">
+                            <div class="artist-cover">
+                                <img src="prototype.png" alt="Обложка исполнителя">
+                            </div>
+                            <div class="artist-info">
+                                <h3>Имя исполнителя</h3>
+                                <p>Жанр</p>
+                            </div>
+                        </div>
                 </section>
 
-                <section id="albums">
-
+                <section id="playlists">
+                    <h2>Плейлисты</h2>
+                    <div class="playlists-list">
+                        <div class="playlist-card">
+                            <div class="playlist-cover">
+                                <img src="prototype.png" alt="Обложка плейлиста">
+                            </div>
+                            <div class="playlist-info">
+                                <h3>Название плейлиста</h3>
+                            </div>
+                        </div>
+                        <div class="playlist-card">
+                            <div class="playlist-cover">
+                                <img src="infested.png" alt="Обложка плейлиста">
+                            </div>
+                            <div class="playlist-info">
+                                <h3>Название плейлиста</h3>
+                            </div>
+                        </div>
+                        <div class="playlist-card">
+                            <div class="playlist-cover">
+                                <img src="prototype.png" alt="Обложка плейлиста">
+                            </div>
+                            <div class="playlist-info">
+                                <h3>Название плейлиста</h3>
+                            </div>
+                        </div>
                 </section>
 
-                <section id="contact">
+                <section id="favorites">
+                    <h2>Избранное - в разработке</h2>
                 </section>
+
+                <section id="my-music">
+                    <h2>Моя музыка</h2>
+                    <div class="my-music-list">
+                        <div class="my-music-card">
+                            <div class="my-music-cover">
+                                <img src="prototype.png" alt="Обложка трека">
+                            </div>
+                            <div class="my-music-info">
+                                <h3>Название трека</h3>
+                                <p>Имя исполнителя</p>
+                            </div>
+                        </div>
+                        <div class="my-music-card">
+                            <div class="my-music-cover">
+                                <img src="infested.png" alt="Обложка трека">
+                            </div>
+                            <div class="my-music-info">
+                                <h3>Название трека</h3>
+                                <p>Имя исполнителя</p>
+                            </div>
+                        </div>
+                        <div class="my-music-card">
+                            <div class="my-music-cover">
+                                <img src="prototype.png" alt="Обложка трека">
+                            </div>
+                            <div class="my-music-info">
+                                <h3>Название трека</h3>
+                                <p>Имя исполнителя</p>
+                            </div>
+                        </div>
+                </section>
+
+
             </main>
         </div>
 
