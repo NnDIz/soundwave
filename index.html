@@ -132,6 +132,19 @@
                         accept="audio/*" 
                         hidden
                     >
+
+                    <div id="add-track-form" class="add-track-form">
+
+                        <h2>Добавить трек</h2>
+                        <input type="text" id="track-title" placeholder="Название трека">
+                        <input type="text" id="track-artist" placeholder="Исполнитель">
+                        <input type="text" id="track-album" placeholder="Альбом">
+                        <input type="text" id="track-genre" placeholder="Жанр">
+                        <input type="number" id="track-year" placeholder="Год">
+
+                        <button id="save-track-button">Сохранить</button>
+                        <button id="cancel-track-button">Отмена</button>
+                    </div>
                     <div class="my-music-list">
                         <div class="my-music-card">
                             <div class="my-music-cover">
@@ -193,7 +206,51 @@
         
 
         <footer>
+                        <!-- Нижний плеер -->
+            <div class="bottom-player">
 
+                <div class="player-track">
+                    <img id="player-cover" src="empty-photo-artist.png" alt="Обложка">
+
+                    <div>
+                        <h3 id="player-title">Трек не выбран</h3>
+                        <p id="player-artist">—</p>
+                    </div>
+                </div>
+
+                <div class="player-controls">
+                    <button id="player-prev">⏮</button>
+                    <button id="player-play">▶</button>
+                    <button id="player-next">⏭</button>
+                </div>
+
+                <div class="player-progress">
+                    <span id="player-current-time">0:00</span>
+
+                    <input
+                        id="player-progress"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="0"
+                    >
+
+                    <span id="player-duration">0:00</span>
+                </div>
+
+                <div class="player-volume">
+                    🔊
+                    <input
+                        id="player-volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="1"
+                    >
+                </div>
+
+            </div>
         </footer>
         <script src="script.js"></script>
 

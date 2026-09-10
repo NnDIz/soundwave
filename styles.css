@@ -653,3 +653,293 @@ main > #home {
     background-color: #5965a0;
     transform: scale(1.1);
 }
+
+.add-track-form {
+    display: none;
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 25px;
+    background-color: #1a1a1a;
+    border-radius: 15px;
+}
+
+.add-track-form.active {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.add-track-form input {
+    padding: 12px 15px;
+    background-color: #222222;
+    color: white;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.add-track-form button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+body.track-form-open {
+    overflow: hidden;
+
+}
+
+#add-track-form {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.75);
+}
+
+#add-track-form.active {
+    display: flex;
+    pointer-events: auto;
+}
+
+#add-track-form * {
+    pointer-events: auto;
+}
+
+
+.bottom-player {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 80px;
+
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+    padding: 10px 25px;
+
+    background: #11131b;
+    border-top: 1px solid #292c38;
+
+    z-index: 1500;
+}
+
+.player-track {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 250px;
+    min-width: 250px;
+}
+
+.player-track img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.player-track h3 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.player-track p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-controls button {
+    border: none;
+    background: none;
+    color: white;
+
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#player-play {
+    font-size: 24px;
+}
+
+.player-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex: 1;
+}
+
+.player-progress input {
+    width: 100%;
+}
+
+.player-progress span {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.player-volume {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 130px;
+}
+
+.player-volume input {
+    width: 90px;
+}
+
+body.track-form-open > *:not(#add-track-form) {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+body.track-form-open {
+    overflow: hidden !important;
+}
+
+.track-full-card {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    backdrop-filter: blur(10px);
+}
+
+.track-full-card-content {
+    position: relative;
+
+    display: flex;
+    gap: 35px;
+
+    width: 700px;
+    max-width: calc(100vw - 40px);
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    background: #11131b;
+    border: 1px solid #292c38;
+
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+}
+
+.track-full-card-cover {
+    width: 280px;
+    height: 280px;
+
+    object-fit: cover;
+
+    border-radius: 14px;
+}
+
+.track-full-card-info {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.track-full-card-info h2 {
+    margin: 0;
+
+    font-size: 30px;
+}
+
+.track-full-card-artist {
+    margin: 8px 0 25px;
+
+    font-size: 17px;
+    opacity: 0.6;
+}
+
+.track-full-card-play {
+    width: fit-content;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #6d5ef5;
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+.track-full-card-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    margin-top: 30px;
+}
+
+.track-full-card-details div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.track-full-card-details span {
+    font-size: 12px;
+    opacity: 0.45;
+}
+
+.track-full-card-details strong {
+    font-size: 14px;
+}
+
+.track-full-card-close {
+    position: absolute;
+
+    top: 15px;
+    right: 18px;
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+.track-full-card-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
