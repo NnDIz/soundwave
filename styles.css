@@ -27,6 +27,7 @@ main {
     flex: 1;
     margin-left: 5px;
     padding: 15px;
+    min-width: 0;
 }
 
 aside ul {
@@ -353,4 +354,116 @@ main > #home {
     font-size: 14px;
     color: #aaa;
     margin: 0;
+}
+
+.artist-space {
+    width: 100%;
+    height: 600px;
+    background-color: #0b0d14;
+    border-radius: 15px;
+    overflow:hidden;
+    position: relative;
+}
+
+.artist-world {
+    position: absolute;
+    width: 3000px;
+    height: 2000px;
+    left: 0;
+    top: 0;
+    transform: translate(0,0);
+    transition: transform 0.6s ease;
+}
+
+.artist-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin: 20px 0;
+}
+
+    .artist-controls input,
+    .artist-controls select {
+        background-color: #1a1c25;
+        color: white;
+        border: 1px solid #2b2e3a;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+
+    .artist-controls input {
+        flex: 1;
+    }
+
+    .artist-controls select {
+        width: 220px;
+    }
+
+    .artist-node {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #252a3a;
+        border: 2px solid #555b75;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        box-shadow:
+            0 0 10px #5965a0,
+            0 0 25px #5965a0;
+
+        transition:  
+            transform 0.3s,
+            box-shadow 0.3s,
+            opacity 0.3s;
+    }
+
+    .artist-node img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+    }
+
+    .artist-node:hover {
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow:
+            0 0 15px #7d8cff,
+            0 0 40px #7d8cff;
+    }
+
+    .artist-node span {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+
+        margin-top: 10px;
+        white-space: nowrap;
+
+        opacity: 0;
+        transition: 0.2s;
+    }
+
+    .artist-node:hover span{
+        opacity: 1;
+    }
+
+
+.artist-node.search-match {
+    box-shadow:
+        0 0 20px var(--search-glow),
+        0 0 45px var(--search-glow),
+        0 0 80px var(--search-glow);
 }
