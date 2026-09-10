@@ -88,6 +88,7 @@
                     </div>
                 </section>
 
+
                 <section id="playlists">
                     <h2>Плейлисты</h2>
                     <div class="playlists-list">
@@ -123,6 +124,14 @@
 
                 <section id="my-music">
                     <h2>Моя музыка</h2>
+                    <button id="add-track-button">＋ Добавить трек</button>
+
+                    <input 
+                        type="file" 
+                        id="track-file-input" 
+                        accept="audio/*" 
+                        hidden
+                    >
                     <div class="my-music-list">
                         <div class="my-music-card">
                             <div class="my-music-cover">
@@ -152,6 +161,30 @@
                             </div>
                         </div>
                 </section>
+
+                <div id="artist-modal" class="artist-modal">
+                    <div class="artist-modal-content">
+
+                        <button id="artist-modal-close">✕</button>
+
+                        <div class="artist-modal-header">
+                            <img id="artist-modal-image" src="" alt="Фото исполнителя">
+
+                            <div>
+                                <h1 id="artist-modal-name"></h1>
+                                <p id="artist-modal-tracks"></p>
+                            </div>
+                        </div>
+
+                        <div class="artist-modal-track-list">
+                            <h2>Треки</h2>
+
+                            <div id="artist-modal-tracks-list">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
 
             </main>

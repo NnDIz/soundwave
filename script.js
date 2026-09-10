@@ -1,5 +1,4 @@
 const tracks = [
-
     {
         title: "Shape of You",
         artist: "Ed Sheeran",
@@ -9,91 +8,168 @@ const tracks = [
         genre: "Pop",
         cover: "prototype.png",
         audio: "prototype.mp3"
+    },
+    {
+        title: "Perfect",
+        artist: "Ed Sheeran",
+        album: "Divide",
+        duration: "4:23",
+        year: 2017,
+        genre: "Pop",
+        cover: "prototype.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "Photograph",
+        artist: "Ed Sheeran",
+        album: "X",
+        duration: "4:18",
+        year: 2014,
+        genre: "Pop",
+        cover: "prototype.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "Believer",
+        artist: "Imagine Dragons",
+        album: "Evolve",
+        duration: "3:24",
+        year: 2017,
+        genre: "Pop Rock",
+        cover: "infested.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "Thunder",
+        artist: "Imagine Dragons",
+        album: "Evolve",
+        duration: "3:07",
+        year: 2017,
+        genre: "Pop",
+        cover: "infested.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "Demons",
+        artist: "Imagine Dragons",
+        album: "Night Visions",
+        duration: "2:57",
+        year: 2012,
+        genre: "Alternative Rock",
+        cover: "infested.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "Numb",
+        artist: "Linkin Park",
+        album: "Meteora",
+        duration: "3:07",
+        year: 2003,
+        genre: "Nu Metal",
+        cover: "prototype.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "In the End",
+        artist: "Linkin Park",
+        album: "Hybrid Theory",
+        duration: "3:36",
+        year: 2000,
+        genre: "Nu Metal",
+        cover: "prototype.png",
+        audio: "prototype.mp3"
+    },
+    {
+        title: "What I've Done",
+        artist: "Linkin Park",
+        album: "Minutes to Midnight",
+        duration: "3:25",
+        year: 2007,
+        genre: "Alternative Rock",
+        cover: "prototype.png",
+        audio: "prototype.mp3"
     }
-]
+];
 
-const recentTracks = document.querySelector(".recent-tracks");
 
+const artists = [
+    {
+        name: "Ed Sheeran",
+        image: "empty-photo-artist.png"
+    },
+    {
+        name: "Imagine Dragons",
+        image: "empty-photo-artist.png"
+    },
+    {
+        name: "Linkin Park",
+        image: "empty-photo-artist.png"
+    }
+];
+
+
+// ====================
+// IndexedDB
+// ====================
 
 const request = indexedDB.open("SoundWaveDB", 2);
 
-request.onupgradeneeded = function (event) {
+request.onupgradeneeded = function(event) {
     const db = event.target.result;
 
     if (!db.objectStoreNames.contains("tracks")) {
-            db.createObjectStore("tracks", 
-            { 
-                keyPath: "id", 
-                autoIncrement: true 
-            }
-        );
-    }
-    
-};
-
-function loadTracks(db) {
-    const transaction = db.transaction("tracks", "readonly");
-    const store = transaction.objectStore("tracks");
-
-    const myMusicList = document.querySelector(".my-music-list");
-
-    const getAllRequest = store.getAll();
-
-    getAllRequest.onsuccess = function () {
-
-        const tracksFromDB = getAllRequest.result;
-        console.log(tracksFromDB[0]);
-
-        myMusicList.innerHTML = "";
-
-        tracksFromDB.forEach(function(track) {
-
-            const card = document.createElement("div");
-            card.classList.add("my-music-card");
-
-            const cover = document.createElement("div");
-            cover.classList.add("my-music-cover");
-
-            const img = document.createElement("img");
-            img.src = track.cover;
-            img.alt = "Обложка трека";
-
-            cover.appendChild(img);
-
-            const info = document.createElement("div");
-            info.classList.add("my-music-info");
-
-            const title = document.createElement("h3");
-            title.textContent = track.title;
-
-            const artist = document.createElement("p");
-            artist.textContent = track.artist;
-
-            info.appendChild(title);
-            info.appendChild(artist);
-
-            card.appendChild(cover);
-            card.appendChild(info);
-
-            myMusicList.appendChild(card);
-
+        db.createObjectStore("tracks", {
+            keyPath: "id",
+            autoIncrement: true
         });
-
-        console.log("Tracks retrieved successfully");
-        console.log(tracksFromDB);
-    };
+    }
 };
 
-request.onsuccess = function (event) {
+request.onsuccess = function(event) {
     const db = event.target.result;
     console.log("Database opened successfully");
-
     loadTracks(db);
 };
 
-request.onerror = function (event) {
-    console.error("Database error: " + event.target.errorCode);
+request.onerror = function(event) {
+    console.error("Database error:", event.target.error);
 };
+
+
+function loadTracks(db) {
+    const store = db
+        .transaction("tracks", "readonly")
+        .objectStore("tracks");
+
+    store.getAll().onsuccess = function(event) {
+        const tracksFromDB = event.target.result;
+        const list = document.querySelector(".my-music-list");
+
+        list.innerHTML = "";
+
+        tracksFromDB.forEach(function(track) {
+            const card = document.createElement("div");
+            card.className = "my-music-card";
+
+            card.innerHTML = `
+                <div class="my-music-cover">
+                    <img src="${track.cover}" alt="Обложка трека">
+                </div>
+                <div class="my-music-info">
+                    <h3>${track.title}</h3>
+                    <p>${track.artist}</p>
+                </div>
+            `;
+
+            list.appendChild(card);
+        });
+    };
+}
+
+
+// ====================
+// Навигация
+// ====================
 
 const navigationLinks = document.querySelectorAll("aside a");
 const sections = document.querySelectorAll("main > section");
@@ -118,92 +194,19 @@ navigationLinks.forEach(function(link) {
     });
 });
 
-const artists = [
-    {
-        name: "Ed Sheeran",
-        tracks: 12,
-        image: "empty-photo-artist.png"
-    },
-    {
-        name: "Imagine Dragons",
-        tracks: 8,
-        image: "empty-photo-artist.png"
-    },
-    {
-        name: "Linkin Park",
-        tracks: 15,
-        image: "empty-photo-artist.png"
-    }
-];
 
+// ====================
+// Исполнители
+// ====================
 
 const artistSelect = document.querySelector("#artist-select");
 const artistSearch = document.querySelector(".artist-controls input");
 const artistSpace = document.querySelector(".artist-space");
 const artistWorld = document.querySelector(".artist-world");
 
-artistSearch.addEventListener("input", function() {
-    const searchText = artistSearch.value
-        .toLowerCase()
-        .replace(/\s/g, "");
 
-    const nodes = document.querySelectorAll(".artist-node");
+// Заполняем select
 
-    nodes.forEach(function(node, index) {
-        const artistName = artists[index].name
-            .toLowerCase()
-            .replace(/\s/g, "");
-
-        node.classList.remove("search-match");
-        node.style.removeProperty("--search-glow");
-        node.style.opacity = "1";
-        node.style.boxShadow = "";
-
-        if (searchText === "") {
-            return;
-        }
-
-        let searchIndex = 0;
-        let matchedCharacters = 0;
-
-        // Ищем буквы запроса по порядку в имени артиста
-        for (let i = 0; i < artistName.length; i++) {
-            if (artistName[i] === searchText[searchIndex]) {
-                matchedCharacters++;
-                searchIndex++;
-
-                if (searchIndex === searchText.length) {
-                    break;
-                }
-            }
-        }
-
-        // Доля совпавших букв относительно длины имени артиста
-        const matchPercent = matchedCharacters / artistName.length;
-
-        if (matchedCharacters > 0) {
-            node.classList.add("search-match");
-
-            const glowSize = 10 + matchPercent * 80;
-
-            node.style.setProperty(
-                "--search-glow",
-                "#7d8cff"
-            );
-
-            node.style.boxShadow = `
-                0 0 ${glowSize}px #7d8cff,
-                0 0 ${glowSize * 2}px #7d8cff,
-                0 0 ${glowSize * 3}px #7d8cff
-            `;
-
-            node.style.opacity = 0.25 + matchPercent * 0.75;
-        } else {
-            node.style.opacity = "0.25";
-        }
-    });
-});
-// Заполняем список исполнителей
 artists.forEach(function(artist) {
     const option = document.createElement("option");
 
@@ -214,38 +217,85 @@ artists.forEach(function(artist) {
 });
 
 
+// Поиск исполнителя
+
+artistSearch.addEventListener("input", function() {
+    const searchText = artistSearch.value
+        .toLowerCase()
+        .replace(/\s/g, "");
+
+    document.querySelectorAll(".artist-node").forEach(function(node, index) {
+        const name = artists[index].name
+            .toLowerCase()
+            .replace(/\s/g, "");
+
+        node.style.opacity = "1";
+        node.style.boxShadow = "";
+
+        if (!searchText) {
+            return;
+        }
+
+        let searchIndex = 0;
+        let matched = 0;
+
+        for (let letter of name) {
+            if (letter === searchText[searchIndex]) {
+                matched++;
+                searchIndex++;
+
+                if (searchIndex === searchText.length) {
+                    break;
+                }
+            }
+        }
+
+        if (matched === 0) {
+            node.style.opacity = "0.25";
+            return;
+        }
+
+        const percent = matched / name.length;
+        const glow = 10 + percent * 80;
+
+        node.style.boxShadow = `
+            0 0 ${glow}px #7d8cff,
+            0 0 ${glow * 2}px #7d8cff,
+            0 0 ${glow * 3}px #7d8cff
+        `;
+
+        node.style.opacity = 0.25 + percent * 0.75;
+    });
+});
+
+
+// ====================
 // Камера
+// ====================
+
 let cameraX = 0;
 let cameraY = 0;
-
 let isDragging = false;
 let startX = 0;
 let startY = 0;
 
+
 artistSpace.addEventListener("mousedown", function(event) {
     isDragging = true;
-
     startX = event.clientX;
     startY = event.clientY;
 });
 
 artistSpace.addEventListener("mousemove", function(event) {
-    if(!isDragging)
-    {
-        return;
-    }
-    
-    const deltaX = event.clientX - startX;
-    const deltaY = event.clientY - startY;
+    if (!isDragging) return;
 
     moveCamera(
-        cameraX + deltaX,
-        cameraY + deltaY
+        cameraX + event.clientX - startX,
+        cameraY + event.clientY - startY
     );
 
     startX = event.clientX;
     startY = event.clientY;
-
 });
 
 artistSpace.addEventListener("mouseup", function() {
@@ -256,52 +306,100 @@ artistSpace.addEventListener("mouseleave", function() {
     isDragging = false;
 });
 
+
 function moveCamera(x, y) {
     cameraX = x;
     cameraY = y;
 
-    artistWorld.style.transform = `translate(${cameraX}px, ${cameraY}px)`;
+    artistWorld.style.transform =
+        `translate(${cameraX}px, ${cameraY}px)`;
 }
 
 
-// Создаём исполнителей
+// ====================
+// Модальное окно исполнителя
+// ====================
+
+const artistModal = document.querySelector("#artist-modal");
+const artistModalClose = document.querySelector("#artist-modal-close");
+
+
+function openArtist(artist) {
+    const artistTracks = tracks.filter(function(track) {
+        return track.artist === artist.name;
+    });
+
+    document.querySelector("#artist-modal-image").src = artist.image;
+    document.querySelector("#artist-modal-name").textContent = artist.name;
+    document.querySelector("#artist-modal-tracks").textContent =
+        `${artistTracks.length} треков`;
+
+    const list = document.querySelector("#artist-modal-tracks-list");
+
+    list.innerHTML = "";
+
+    artistTracks.forEach(function(track) {
+        const card = document.createElement("div");
+
+        card.className = "artist-modal-track";
+
+        card.innerHTML = `
+            <button class="artist-track-play">▶</button>
+
+            <div>
+                <span>${track.title}</span>
+                <div>${track.artist}</div>
+            </div>
+
+            <span>${track.duration}</span>
+        `;
+
+        list.appendChild(card);
+    });
+
+    artistModal.classList.add("active");
+}
+
+
+artistModalClose.addEventListener("click", function() {
+    artistModal.classList.remove("active");
+});
+
+
+// ====================
+// Создание исполнителей
+// ====================
+
 function renderArtists() {
     artistWorld.innerHTML = "";
 
     artists.forEach(function(artist, index) {
+        const artistTracks = tracks.filter(function(track) {
+            return track.artist === artist.name;
+        });
 
         const node = document.createElement("div");
-        node.classList.add("artist-node");
 
-        const image = document.createElement("img");
-        image.src = artist.image;
-        image.alt = artist.name;
+        node.className = "artist-node";
 
-        node.appendChild(image);
+        node.innerHTML = `
+            <img src="${artist.image}" alt="${artist.name}">
+            <span>${artist.name} • ${artistTracks.length} треков</span>
+        `;
 
-
-        // Размер круга зависит от количества треков
-        const size = 50 + artist.tracks * 5;
+        const size = 50 + artistTracks.length * 5;
 
         node.style.width = `${size}px`;
         node.style.height = `${size}px`;
 
+        node.style.left = `${500 + (index % 4) * 500}px`;
+        node.style.top = `${400 + Math.floor(index / 4) * 400}px`;
 
-        // Информация при наведении
-        const info = document.createElement("span");
+        node.addEventListener("click", function() {
+            openArtist(artist);
+        });
 
-        info.textContent = `${artist.name} • ${artist.tracks} треков`;
-
-        node.appendChild(info);
         artistWorld.appendChild(node);
-
-
-        // Позиция исполнителя внутри мира
-        const x = 500 + (index % 4) * 500;
-        const y = 400 + Math.floor(index / 4) * 400;
-
-        node.style.left = `${x}px`;
-        node.style.top = `${y}px`;
     });
 }
 
@@ -309,46 +407,62 @@ function renderArtists() {
 renderArtists();
 
 
-// Ставим камеру в центр мира
-moveCamera(
-    artistSpace.clientWidth / 2 - artistWorld.offsetWidth / 2,
-    artistSpace.clientHeight / 2 - artistWorld.offsetHeight / 2
-);
+// ====================
+// Центрирование камеры
+// ====================
+
+function centerArtists() {
+    moveCamera(
+        artistSpace.clientWidth / 2 - artistWorld.offsetWidth / 2,
+        artistSpace.clientHeight / 2 - artistWorld.offsetHeight / 2
+    );
+}
+
+centerArtists();
 
 
+// ====================
 // Выбор исполнителя
-artistSelect.addEventListener("change", function() {
+// ====================
 
+artistSelect.addEventListener("change", function() {
     const selectedArtist = artistSelect.value;
 
-    // Если выбрали "Все исполнители"
     if (selectedArtist === "Все исполнители") {
-
-        moveCamera(
-            artistSpace.clientWidth / 2 - artistWorld.offsetWidth / 2,
-            artistSpace.clientHeight / 2 - artistWorld.offsetHeight / 2
-        );
-
+        centerArtists();
         return;
     }
 
+    document.querySelectorAll(".artist-node").forEach(function(node, index) {
+        if (artists[index].name !== selectedArtist) return;
 
-    const nodes = document.querySelectorAll(".artist-node");
+        const x = node.offsetLeft + node.offsetWidth / 2;
+        const y = node.offsetTop + node.offsetHeight / 2;
 
-    nodes.forEach(function(node, index) {
-
-        if (artists[index].name === selectedArtist) {
-
-            const nodeCenterX = node.offsetLeft + node.offsetWidth / 2;
-            const nodeCenterY = node.offsetTop + node.offsetHeight / 2;
-
-            const cameraX =
-                artistSpace.clientWidth / 2 - nodeCenterX;
-
-            const cameraY =
-                artistSpace.clientHeight / 2 - nodeCenterY;
-
-            moveCamera(cameraX, cameraY);
-        }
+        moveCamera(
+            artistSpace.clientWidth / 2 - x,
+            artistSpace.clientHeight / 2 - y
+        );
     });
+});
+
+
+const addTrackButton = document.querySelector("#add-track-button");
+const trackFileInput = document.querySelector("#track-file-input");
+
+addTrackButton.addEventListener("click", function() {
+    trackFileInput.click();
+});
+
+trackFileInput.addEventListener("change", function() {
+    const file = trackFileInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    console.log("Выбран файл:", file);
+    console.log("Название:", file.name);
+    console.log("Размер:", file.size);
+    console.log("Тип:", file.type);
 });
