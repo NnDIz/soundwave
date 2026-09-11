@@ -1007,3 +1007,9 @@ body.track-form-open {
     font-size: 14px;
     white-space: nowrap;
 }
+
+#player-shuffle.active,
+#player-repeat.active {
+    color: #6D5EF5;
+    background: rgba(109, 94, 245, 0.15);
+}
