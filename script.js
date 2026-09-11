@@ -59,6 +59,23 @@ function loadTracks() {
 
         list.innerHTML = "";
 
+        const lastActiveTrackId =
+            Number(localStorage.getItem("lastActiveTrackId"));
+
+        const lastActiveTrack =
+            savedTracks.find(function(track) {
+                return track.id === lastActiveTrackId;
+            });
+
+        if (lastActiveTrack) {
+            currentTrack = lastActiveTrack;
+            updateActiveTrack(lastActiveTrack);
+        } else {
+            updateActiveTrack(null);
+        }
+
+        renderHomeTracks(savedTracks);
+
         for (const track of savedTracks) {
 
             // Автоматически определяем длительность
@@ -133,9 +150,95 @@ let currentAudio = null;
 let currentTrack = null;
 let currentAudioUrl = null;
 
+function updateActiveTrack(track) {
+
+    if (!track) {
+
+        activeTrackCover.src =
+            "empty-photo-artist.png";
+
+        activeTrackTitle.textContent =
+            "Трек не выбран";
+
+        activeTrackArtist.textContent =
+            "—";
+
+        activeTrackDetails.textContent =
+            "—";
+
+        activeTrackCurrentTime.textContent =
+            "0:00";
+
+        activeTrackDuration.textContent =
+            "0:00";
+
+        activeTrackProgress.value = 0;
+        activeTrackProgress.max = 100;
+
+        activeTrackPlay.textContent = "▶";
+
+        return;
+    }
+
+    activeTrackCover.src =
+        track.cover || "empty-photo-artist.png";
+
+    activeTrackTitle.textContent =
+        track.title || "Без названия";
+
+    activeTrackArtist.textContent =
+        track.artist || "Неизвестный исполнитель";
+
+    const details = [
+        track.album,
+        track.genre,
+        track.year
+    ].filter(Boolean);
+
+    activeTrackDetails.textContent =
+        details.length
+            ? details.join(" • ")
+            : "—";
+
+    activeTrackDuration.textContent =
+        track.duration || "0:00";
+
+    activeTrackPlay.textContent =
+        currentAudio && !currentAudio.paused
+            ? "⏸"
+            : "▶";
+}
+
 const playerCover = document.querySelector("#player-cover");
 const playerTitle = document.querySelector("#player-title");
 const playerArtist = document.querySelector("#player-artist");
+
+const activeTrackCover =
+    document.querySelector("#active-track-cover");
+
+const activeTrackArtist =
+    document.querySelector("#active-track-artist");
+
+const activeTrackTitle =
+    document.querySelector("#active-track-title");
+
+const activeTrackDetails =
+    document.querySelector("#active-track-details");
+
+    const activeTrackPlay =
+    document.querySelector("#active-track-play");
+
+const activeTrackProgress =
+    document.querySelector("#active-track-progress");
+
+const activeTrackCurrentTime =
+    document.querySelector("#active-track-current-time");
+
+const activeTrackDuration =
+    document.querySelector("#active-track-duration");
+
+const activeTrackVolume =
+    document.querySelector("#active-track-volume"); 
 
 const playerPlay = document.querySelector("#player-play");
 const playerProgress = document.querySelector("#player-progress");
@@ -149,14 +252,21 @@ const playerDuration =
 const playerVolume =
     document.querySelector("#player-volume");
 
+const searchForm = document.querySelector(".search-engine");
+const searchInput = document.querySelector(".search-input");
+const searchResults = document.querySelector(".search-results");
+
 
 function playTrack(track) {
+    
 
     if (!track.audio) {
         alert("У этого трека нет аудиофайла.");
         return;
     }
 
+
+    localStorage.setItem("lastActiveTrackId", track.id);
     // Нажали на уже играющий трек
     if (currentTrack === track && currentAudio) {
 
@@ -196,25 +306,41 @@ function playTrack(track) {
     currentAudio = new Audio(audioSource);
     currentTrack = track;
 
-    currentAudio.volume = Number(playerVolume.value);
+    updateActiveTrack(track);
 
     // Информация о треке
-    playerCover.src = track.cover || "empty-photo-artist.png";
+    playerCover.src =
+        track.cover || "empty-photo-artist.png";
+
     playerTitle.textContent = track.title;
     playerArtist.textContent = track.artist;
 
     currentAudio.addEventListener("loadedmetadata", function() {
-        playerDuration.textContent =
+
+        const duration =
             formatDuration(currentAudio.duration);
 
+        playerDuration.textContent = duration;
         playerProgress.max = currentAudio.duration;
-    });
 
+        activeTrackDuration.textContent = duration;
+        activeTrackProgress.max = currentAudio.duration;
+    });
     currentAudio.addEventListener("timeupdate", function() {
-        playerProgress.value = currentAudio.currentTime;
+
+        const currentTime =
+            currentAudio.currentTime;
+
+        playerProgress.value = currentTime;
 
         playerCurrentTime.textContent =
-            formatDuration(currentAudio.currentTime);
+            formatDuration(currentTime);
+
+        activeTrackProgress.value =
+            currentTime;
+
+        activeTrackCurrentTime.textContent =
+            formatDuration(currentTime);
     });
 
     currentAudio.addEventListener("play", updatePlayerButton);
@@ -236,13 +362,15 @@ function playTrack(track) {
 
 function updatePlayerButton() {
 
-    if (currentAudio && !currentAudio.paused) {
-        playerPlay.textContent = "⏸";
-    } else {
-        playerPlay.textContent = "▶";
-    }
-}
+    const isPlaying =
+        currentAudio && !currentAudio.paused;
 
+    playerPlay.textContent =
+        isPlaying ? "⏸" : "▶";
+
+    activeTrackPlay.textContent =
+        isPlaying ? "⏸" : "▶";
+}
 
 playerPlay.addEventListener("click", function() {
 
@@ -255,6 +383,42 @@ playerPlay.addEventListener("click", function() {
     }
 });
 
+activeTrackPlay.addEventListener("click", function(event) {
+
+    event.stopPropagation();
+
+    if (!currentAudio) return;
+
+    if (currentAudio.paused) {
+        currentAudio.play();
+    } else {
+        currentAudio.pause();
+    }
+});
+
+activeTrackProgress.addEventListener("input", function(event) {
+
+    event.stopPropagation();
+
+    if (!currentAudio) return;
+
+    currentAudio.currentTime =
+        Number(activeTrackProgress.value);
+});
+
+activeTrackVolume.addEventListener("input", function(event) {
+
+    event.stopPropagation();
+
+    if (!currentAudio) return;
+
+    const volume =
+        Number(activeTrackVolume.value);
+
+    currentAudio.volume = volume;
+
+    playerVolume.value = volume;
+});
 
 playerProgress.addEventListener("input", function() {
 
@@ -269,10 +433,13 @@ playerVolume.addEventListener("input", function() {
 
     if (!currentAudio) return;
 
-    currentAudio.volume =
+    const volume =
         Number(playerVolume.value);
-});
 
+    currentAudio.volume = volume;
+
+    activeTrackVolume.value = volume;
+});
 // ====================
 // Навигация
 // ====================
@@ -816,3 +983,177 @@ function formatDuration(seconds) {
     return `${minutes}:${String(secondsLeft).padStart(2, "0")}`;
 }
 
+function renderHomeTracks(tracks) {
+    const recentList = document.querySelector(".recent-tracks");
+
+    if (!recentList) return;
+
+    recentList.innerHTML = "";
+
+    const recentTracks = [...tracks].reverse().slice(0, 5);
+
+    recentTracks.forEach(function(track) {
+        const card = document.createElement("div");
+        card.className = "track-card";
+
+        card.innerHTML = `
+            <div class="track-cover">
+                <img src="${track.cover || "empty-photo-artist.png"}" alt="Обложка трека">
+            </div>
+
+            <div class="track-info">
+                <h3>${track.title}</h3>
+                <p>${track.artist}</p>
+            </div>
+        `;
+
+        card.addEventListener("click", function() {
+            playTrack(track);
+        });
+
+        recentList.appendChild(card);
+    });
+}
+
+function searchTracks(query) {
+    const transaction = db.transaction("tracks", "readonly");
+    const store = transaction.objectStore("tracks");
+
+    store.getAll().onsuccess = function(event) {
+        const tracks = event.target.result;
+
+        const normalizedQuery = query
+            .toLowerCase()
+            .trim();
+
+        if (!normalizedQuery) {
+            renderSearchResults([]);
+            return;
+        }
+
+        const results = tracks
+            .map(function(track) {
+
+                const title = (track.title || "").toLowerCase();
+                const artist = (track.artist || "").toLowerCase();
+
+                let score = 0;
+
+                // ====================
+                // Название трека
+                // ====================
+
+                if (title === normalizedQuery) {
+                    score += 1000;
+                }
+                else if (title.startsWith(normalizedQuery)) {
+                    score += 700;
+                }
+                else if (title.includes(normalizedQuery)) {
+                    score += 500;
+                }
+
+                // ====================
+                // Исполнитель
+                // ====================
+
+                if (artist === normalizedQuery) {
+                    score += 900;
+                }
+                else if (artist.startsWith(normalizedQuery)) {
+                    score += 650;
+                }
+                else if (artist.includes(normalizedQuery)) {
+                    score += 450;
+                }
+
+                return {
+                    track: track,
+                    score: score
+                };
+            })
+            .filter(function(result) {
+                return result.score > 0;
+            })
+            .sort(function(a, b) {
+                return b.score - a.score;
+            });
+
+        renderSearchResults(
+            results.map(function(result) {
+                return result.track;
+            })
+        );
+    };
+}
+
+function renderSearchResults(results) {
+    searchResults.innerHTML = "";
+
+    if (results.length === 0) {
+        searchResults.innerHTML = "<p>Ничего не найдено.</p>";
+        return;
+    }
+
+    results.forEach(function(track) {
+        const result = document.createElement("div");
+
+        result.className = "search-result";
+
+        result.innerHTML = `
+            <img src="${track.cover || "empty-photo-artist.png"}">
+            <div class="search-result-info">
+                <strong>${track.title}</strong>
+                <span>${track.artist}</span>
+            </div>
+            <span class="search-result-duration">${track.duration || "—"}</span>
+        `;
+
+        result.addEventListener("click", function() {
+            playTrack(track);
+        });
+
+        searchResults.appendChild(result);
+    });
+}
+
+searchForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    searchTracks(searchInput.value);
+});
+
+searchInput.addEventListener("input", function() {
+    const query = searchInput.value.trim();
+
+    if (query === "") {
+        searchResults.innerHTML = "";
+        return;
+    }
+
+    searchTracks(query);
+});
+
+const activeTrack =
+    document.querySelector(".current-active-track");
+
+activeTrack.addEventListener("dblclick", function() {
+
+    if (!currentTrack) return;
+
+    openTrackCard(currentTrack);
+});
+
+activeTrack.addEventListener("dblclick", function(event) {
+
+    if (
+        event.target.closest("button") ||
+        event.target.closest("input")
+    ) {
+        return;
+    }
+
+    if (!currentTrack) return;
+
+    openTrackCard(currentTrack);
+});

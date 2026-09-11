@@ -27,19 +27,84 @@
                 <section id="home">
                     <h1>Добро пожаловать в SoundWave!</h1>
                     <div class="current-active-track">
-                        <div class="current-active-track-cover">
-                            <img src="prototype.png" alt="Обложка текущего трека">
+
+                        <div class="current-active-track-main">
+
+                            <div class="current-active-track-cover">
+                                <img
+                                    id="active-track-cover"
+                                    src="empty-photo-artist.png"
+                                    alt="Обложка текущего трека"
+                                >
+                            </div>
+
+                            <div class="current-active-track-info">
+
+                                <h2 id="active-track-title">
+                                    Трек не выбран
+                                </h2>
+
+                                <p id="active-track-artist">
+                                    —
+                                </p>
+
+                                <span id="active-track-details">
+                                    —
+                                </span>
+
+                            </div>
+
+                            <button
+                                id="active-track-play"
+                                class="active-track-play"
+                            >
+                                ▶
+                            </button>
+
                         </div>
-                        <div class="current-active-track-info">
-                            <h2>Имя исполнителя</h2>
-                            <p>Название трека</p>
-                            <span>Альбом * Жанр * 2026</span>
+
+
+                        <div class="active-track-progress">
+
+                            <span id="active-track-current-time">
+                                0:00
+                            </span>
+
+                            <input
+                                id="active-track-progress"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="0"
+                            >
+
+                            <span id="active-track-duration">
+                                0:00
+                            </span>
+
                         </div>
+
+
+                        <div class="active-track-volume">
+
+                            <span>🔊</span>
+
+                            <input
+                                id="active-track-volume"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value="1"
+                            >
+
+                        </div>
+
                     </div>
                     <form class="search-engine" inputmode=""  autocomplete="off" autocorrect="off" spellcheck="false">
                         <input type="text" placeholder="Поиск музыки..." class="search-input">
-                        <button type="submit" class="search-submit">Поиск</button>
                     </form>
+                    <div class="search-results"></div>
                     <section class="recent">
                         <h2>Недавно добавленные</h2>
                         <div class="recent-tracks">
